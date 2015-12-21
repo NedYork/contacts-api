@@ -9,6 +9,13 @@ class ContactsController < ApplicationController
     render json: (@user.contacts + @user.shared_contacts)
   end
 
+  def favorites
+    @user = User.find(params[:user_id])
+    @favorites = @user.contacts.select(&:favorite)
+    @favorites += @user.shared_contacts.select(&:favorite)
+    render json: @favorites
+  end
+
   def create
     # contact = contact.new(params[:contact].permit(:name, :email))
     @contact = Contact.new(contact_params)
